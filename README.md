@@ -1,2 +1,2 @@
 # learning-bbs
-this is a learning community built through springboot
+this is a learning community based on springboot
