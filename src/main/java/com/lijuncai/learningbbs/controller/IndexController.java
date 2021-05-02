@@ -34,7 +34,7 @@ public class IndexController {
      *
      * @return 首页模板的路径
      */
-    @RequestMapping(path = "/index", method = RequestMethod.GET)
+    @RequestMapping(path = {"/index","/"}, method = RequestMethod.GET)
     public String getIndexData(Model model , Page page) {
         //方法在调用前，SpringMVC会自动实例化Model和Page对象，并且Page对象会被注入到Model中
         //所以，在前端thymeleaf中可以直接访问Page对象中的数据

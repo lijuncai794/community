@@ -1,12 +1,15 @@
 package com.lijuncai.learningbbs.controller;
 
+import com.lijuncai.learningbbs.util.LearningBbsUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
@@ -72,13 +75,13 @@ public class HelloController {
     }
 
     //POST请求
-    @ResponseBody
-    @RequestMapping(path = "/register", method = RequestMethod.POST)
-    public String register(String userName, String userPsw) {
-        System.out.println(userName);
-        System.out.println(userPsw);
-        return "register success";
-    }
+//    @ResponseBody
+//    @RequestMapping(path = "/register", method = RequestMethod.POST)
+//    public String register(String userName, String userPsw) {
+//        System.out.println(userName);
+//        System.out.println(userPsw);
+//        return "register success";
+//    }
 
 
     //响应HTML数据,这里不设置@ResponseBody，则默认返回html类型
@@ -132,5 +135,45 @@ public class HelloController {
 
         //返回时，DispatcherServlet会将map自动转成JSON格式
         return list;
+    }
+
+    //cookie示例
+    @RequestMapping(path = "/cookie/set", method = RequestMethod.GET)
+    @ResponseBody
+    public String setCookie(HttpServletResponse response) {
+        //创建cookie,一个cookie只能存一个key-value
+        Cookie cookie = new Cookie("code", LearningBbsUtil.generateUUID());
+        //设置cookie生效的范围
+        cookie.setPath("/learning-bbs");
+        //设置cookie的生存时间，若不设置则默认为关闭浏览器就失效
+        cookie.setMaxAge(60 * 10);
+        //发送cookie
+        response.addCookie(cookie);
+        return "set cookie";
+    }
+
+    @RequestMapping(path = "/cookie/get", method = RequestMethod.GET)
+    @ResponseBody
+    public String getCookie(@CookieValue("code") String code) {
+        System.out.println(code);
+        return "get cookie";
+    }
+
+    //session示例
+
+    @RequestMapping(path = "/session/set", method = RequestMethod.GET)
+    @ResponseBody
+    public String setSession(HttpSession session) {
+        session.setAttribute("id", 1);
+        session.setAttribute("name", "Test");
+        return "set session";
+    }
+
+    @RequestMapping(path = "/session/get", method = RequestMethod.GET)
+    @ResponseBody
+    public String getSession(HttpSession session) {
+        System.out.println(session.getAttribute("id"));
+        System.out.println(session.getAttribute("name"));
+        return "get session";
     }
 }

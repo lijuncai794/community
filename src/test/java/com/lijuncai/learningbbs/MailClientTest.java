@@ -26,7 +26,7 @@ public class MailClientTest {
 
     @Test
     public void testSendTextMail() {
-        mailClient.sendMail("ijfyq4gt@chapedia.org", "hello spring mail", "test mail");
+        mailClient.sendMail("ef9rnt1j@meantinc.com", "hello spring mail", "test mail");
     }
 
     @Test
