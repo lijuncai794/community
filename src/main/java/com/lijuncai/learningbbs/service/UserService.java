@@ -4,6 +4,7 @@ import com.lijuncai.learningbbs.dao.LoginTicketMapper;
 import com.lijuncai.learningbbs.dao.UserMapper;
 import com.lijuncai.learningbbs.entity.LoginTicket;
 import com.lijuncai.learningbbs.entity.User;
+import com.lijuncai.learningbbs.util.HostHolder;
 import com.lijuncai.learningbbs.util.LearningBbsConstant;
 import com.lijuncai.learningbbs.util.LearningBbsUtil;
 import com.lijuncai.learningbbs.util.MailClient;
@@ -37,6 +38,9 @@ public class UserService implements LearningBbsConstant {
 
     @Autowired
     private LoginTicketMapper loginTicketMapper;
+
+    @Autowired
+    private HostHolder hostHolder;
 
     //项目域名
     @Value("${learning-bbs.path.domain}")
@@ -220,13 +224,32 @@ public class UserService implements LearningBbsConstant {
     }
 
     /**
-     * 更新头像地址
+     * 更新用户头像
      *
      * @param userId    用户id
-     * @param headerUrl 新的头像url
+     * @param headerUrl 新头像的url
      * @return 受影响的行
      */
     public int updateHeader(int userId, String headerUrl) {
         return userMapper.updateHeader(userId, headerUrl);
+    }
+
+    /**
+     * 修改用户密码
+     *
+     * @param oldPassword 原密码
+     * @param newPassword 新密码
+     * @return int, 表示修改是否成功[-1代表失败，其他代表成功]
+     */
+    public int updatePassword(String oldPassword, String newPassword) {
+        //通过hostHolder获取当前user对象
+        User user = hostHolder.getUser();
+        String passwordMd5 = LearningBbsUtil.md5(oldPassword + user.getSalt());
+        //验证密码,若原密码不正确则返回-1
+        if (!user.getPassword().equals(passwordMd5)) {
+            return -1;
+        }
+        newPassword = LearningBbsUtil.md5(newPassword + user.getSalt());
+        return userMapper.updatePassword(user.getId(), newPassword);
     }
 }

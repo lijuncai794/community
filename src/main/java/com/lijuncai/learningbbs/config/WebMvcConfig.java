@@ -2,6 +2,7 @@ package com.lijuncai.learningbbs.config;
 
 import com.lijuncai.learningbbs.controller.interceptor.HelloInterceptor;
 import com.lijuncai.learningbbs.controller.interceptor.LoginInfoInterceptor;
+import com.lijuncai.learningbbs.controller.interceptor.LoginRequiredInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -17,6 +18,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     private HelloInterceptor helloInterceptor;
     @Autowired
     private LoginInfoInterceptor loginInfoInterceptor;
+    @Autowired
+    private LoginRequiredInterceptor loginRequiredInterceptor;
 
     /**
      * 添加拦截器
@@ -29,6 +32,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
 //                .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg")
 //                .addPathPatterns("/register", "/login");
         registry.addInterceptor(loginInfoInterceptor)
+                .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg");
+        registry.addInterceptor(loginRequiredInterceptor)
                 .excludePathPatterns("/**/*.css", "/**/*.js", "/**/*.png", "/**/*.jpg", "/**/*.jpeg");
     }
 }

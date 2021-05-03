@@ -33,7 +33,7 @@ public class LoginInfoInterceptor implements HandlerInterceptor {
      *
      * @param request  请求对象
      * @param response 响应对象
-     * @param handler  处理器
+     * @param handler  被拦截的对象
      * @return 处理是否成功
      * @throws Exception
      */

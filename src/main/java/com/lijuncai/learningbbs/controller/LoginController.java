@@ -27,7 +27,7 @@ import java.io.OutputStream;
 import java.util.Map;
 
 /**
- * @description: 登录控制类
+ * @description: 登录、注册控制类
  * @author: lijuncai
  **/
 @Controller

@@ -30,4 +30,20 @@ public interface DiscussPostMapper {
      * @return 帖子数量
      */
     int selectDiscussPostRows(@Param("userId") int userId);
+
+    /**
+     * 新增帖子
+     *
+     * @param discussPost 帖子对象
+     * @return 受影响的行数
+     */
+    int insertDiscussPost(DiscussPost discussPost);
+
+    /**
+     * 通过帖子id获取帖子对象
+     *
+     * @param id 帖子id
+     * @return 帖子对象
+     */
+    DiscussPost selectDiscussPostById(int id);
 }
