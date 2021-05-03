@@ -1,2 +1,2 @@
 # learning-bbs
-this is a learning community based on springboot
+learning-bbs是一个基于Spring Boot的学习社区
