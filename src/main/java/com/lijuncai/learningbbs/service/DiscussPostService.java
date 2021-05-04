@@ -42,7 +42,7 @@ public class DiscussPostService {
         return discussPostMapper.selectDiscussPostRows(userId);
     }
 
-    public int addDiscussPost(DiscussPost post){
+    public int addDiscussPost(DiscussPost post) {
         if (post == null) {
             throw new IllegalArgumentException("新增帖子失败，参数为空!");
         }
@@ -57,11 +57,24 @@ public class DiscussPostService {
         return discussPostMapper.insertDiscussPost(post);
     }
 
+    /**
+     * 通过帖子id获取帖子
+     *
+     * @param id 帖子id
+     * @return 帖子对象
+     */
     public DiscussPost findDiscussPostById(int id) {
         return discussPostMapper.selectDiscussPostById(id);
     }
 
-//    public int updateCommentCount(int id, int commentCount) {
-//        return discussPostMapper.updateCommentCount(id, commentCount);
-//    }
+    /**
+     * 更新帖子的评论数量
+     *
+     * @param id           帖子id
+     * @param commentCount 新的评论数量
+     * @return 受影响的行数
+     */
+    public int updateCommentCount(int id, int commentCount) {
+        return discussPostMapper.updateCommentCount(id, commentCount);
+    }
 }

@@ -2,8 +2,10 @@ package com.lijuncai.learningbbs;
 
 import com.lijuncai.learningbbs.dao.DiscussPostMapper;
 import com.lijuncai.learningbbs.dao.LoginTicketMapper;
+import com.lijuncai.learningbbs.dao.MessageMapper;
 import com.lijuncai.learningbbs.dao.UserMapper;
 import com.lijuncai.learningbbs.entity.LoginTicket;
+import com.lijuncai.learningbbs.entity.Message;
 import com.lijuncai.learningbbs.entity.User;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,6 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @description: Mapper测试类
@@ -30,6 +33,9 @@ public class MapperTest {
 
     @Autowired
     private LoginTicketMapper loginTicketMapper;
+
+    @Autowired
+    private MessageMapper messageMapper;
 
     @Test
     public void testSelectUser() {
@@ -91,4 +97,25 @@ public class MapperTest {
         System.out.println(loginTicket);
     }
 
+    @Test
+    public void testSelectLetters() {
+        List<Message> list = messageMapper.selectConversations(111, 0, 20);
+        for (Message message : list) {
+            System.out.println(message);
+        }
+
+        int count = messageMapper.selectConversationCount(111);
+        System.out.println(count);
+
+        list = messageMapper.selectLetters("111_112", 0, 10);
+        for (Message message : list) {
+            System.out.println(message);
+        }
+
+        count = messageMapper.selectLetterCount("111_112");
+        System.out.println(count);
+
+        count = messageMapper.selectLetterUnreadCount(131, "111_131");
+        System.out.println(count);
+    }
 }

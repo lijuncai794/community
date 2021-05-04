@@ -14,3 +14,15 @@
 	max-width: 100%;
 	width: 80%;
 }
+#rightImg{
+	margin-left: 3%;
+}
+#rightMsg{
+	margin-left: 50%;
+}
+#leftImg{
+	margin-left: 2.5%;
+}
+#leftMsg{
+	margin-right: 50%;
+}
