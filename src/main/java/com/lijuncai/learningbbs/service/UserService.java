@@ -252,4 +252,14 @@ public class UserService implements LearningBbsConstant {
         newPassword = LearningBbsUtil.md5(newPassword + user.getSalt());
         return userMapper.updatePassword(user.getId(), newPassword);
     }
+
+    /**
+     * 根据用户名查询用户
+     *
+     * @param username 用户名
+     * @return
+     */
+    public User findUserByName(String username) {
+        return userMapper.selectByName(username);
+    }
 }

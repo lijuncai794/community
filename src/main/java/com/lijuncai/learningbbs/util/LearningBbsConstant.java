@@ -31,12 +31,17 @@ public interface LearningBbsConstant {
     int REMEMBER_EXPIRED_SECONDS = 3600 * 24 * 100;
 
     /**
-     * 评论所属的实体类型：帖子
+     * 实体类型：帖子
      */
     int ENTITY_TYPE_POST = 1;
 
     /**
-     * 评论所属的实体类型：评论
+     * 实体类型：评论
      */
     int ENTITY_TYPE_COMMENT = 2;
+
+    /**
+     * 实体类型：用户
+     */
+    int ENTITY_TYPE_USER = 3;
 }

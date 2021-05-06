@@ -2,8 +2,11 @@ package com.lijuncai.learningbbs.controller;
 
 import com.lijuncai.learningbbs.annotaion.LoginRequired;
 import com.lijuncai.learningbbs.entity.User;
+import com.lijuncai.learningbbs.service.FollowService;
+import com.lijuncai.learningbbs.service.LikeService;
 import com.lijuncai.learningbbs.service.UserService;
 import com.lijuncai.learningbbs.util.HostHolder;
+import com.lijuncai.learningbbs.util.LearningBbsConstant;
 import com.lijuncai.learningbbs.util.LearningBbsUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -29,9 +32,9 @@ import java.io.OutputStream;
  **/
 @Controller
 @RequestMapping("/user")
-public class UserController {
+public class UserController implements LearningBbsConstant {
 
-    private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Value("${learning-bbs.path.upload}")
     private String uploadPath;
@@ -47,6 +50,12 @@ public class UserController {
 
     @Autowired
     private HostHolder hostHolder;
+
+    @Autowired
+    private LikeService likeService;
+
+    @Autowired
+    private FollowService followService;
 
     /**
      * 访问"账号设置"页面
@@ -145,5 +154,41 @@ public class UserController {
         model.addAttribute("msg", "密码修改成功!");
         model.addAttribute("target", "/index");
         return "/site/operate-result";
+    }
+
+    /**
+     * 访问用户主页
+     *
+     * @param userId 用户id
+     * @param model  model对象
+     * @return 用户主页模板地址
+     */
+    @RequestMapping(path = "/profile/{userId}", method = RequestMethod.GET)
+    public String getProfilePage(@PathVariable("userId") int userId, Model model) {
+        //根据id查询用户
+        User user = userService.findUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("访问用户主页失败，该用户不存在!");
+        }
+        model.addAttribute("user", user);
+
+        //获取用户被赞的次数
+        int likeCount = likeService.findUserLikeCount(userId);
+        model.addAttribute("likeCount", likeCount);
+
+        //获取关注了多少用户
+        long followeeCount = followService.findFolloweeCount(userId, ENTITY_TYPE_USER);
+        model.addAttribute("followeeCount", followeeCount);
+        //获取粉丝数量
+        long followerCount = followService.findFollowerCount(ENTITY_TYPE_USER, userId);
+        model.addAttribute("followerCount", followerCount);
+        //是否已关注此用户
+        boolean hasFollowed = false;
+        if (hostHolder.getUser() != null) {
+            hasFollowed = followService.hasFollowed(hostHolder.getUser().getId(), ENTITY_TYPE_USER, userId);
+        }
+        model.addAttribute("hasFollowed", hasFollowed);
+
+        return "/site/profile";
     }
 }

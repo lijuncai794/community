@@ -6,6 +6,7 @@ import com.lijuncai.learningbbs.entity.Page;
 import com.lijuncai.learningbbs.entity.User;
 import com.lijuncai.learningbbs.service.CommentService;
 import com.lijuncai.learningbbs.service.DiscussPostService;
+import com.lijuncai.learningbbs.service.LikeService;
 import com.lijuncai.learningbbs.service.UserService;
 import com.lijuncai.learningbbs.util.HostHolder;
 import com.lijuncai.learningbbs.util.LearningBbsConstant;
@@ -38,6 +39,9 @@ public class DiscussPostController implements LearningBbsConstant {
 
     @Autowired
     private CommentService commentService;
+
+    @Autowired
+    private LikeService likeService;
 
     /**
      * 新增一个帖子
@@ -79,6 +83,13 @@ public class DiscussPostController implements LearningBbsConstant {
         //获取帖子的发布者
         User user = userService.findUserById(post.getUserId());
         model.addAttribute("user", user);
+        //获取帖子的点赞数量
+        long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, post.getId());
+        model.addAttribute("likeCount", likeCount);
+        //获取当前用户对此帖的点赞状态,若此时用户是未登录状态，则默认显示未点赞
+        int likeStatus = hostHolder.getUser() == null ? 0 :
+                likeService.findEntityLikeStatus(hostHolder.getUser().getId(), ENTITY_TYPE_POST, post.getId());
+        model.addAttribute("likeStatus", likeStatus);
 
         //设置分页相关信息
         page.setLimit(5);
@@ -96,10 +107,17 @@ public class DiscussPostController implements LearningBbsConstant {
                 //每个需要显示的评论--> 评论作者：评论信息
                 Map<String, Object> commentShow = new HashMap<>();
 
-                //评论信息
+                //评论的内容
                 commentShow.put("comment", comment);
-                //作者
+                //评论的作者
                 commentShow.put("user", userService.findUserById(comment.getUserId()));
+                //评论的点赞数量
+                likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_COMMENT, comment.getId());
+                commentShow.put("likeCount", likeCount);
+                //评论的点赞状态,若此时用户是未登录状态，则默认显示未点赞
+                likeStatus = hostHolder.getUser() == null ? 0 :
+                        likeService.findEntityLikeStatus(hostHolder.getUser().getId(), ENTITY_TYPE_COMMENT, comment.getId());
+                commentShow.put("likeStatus", likeStatus);
 
                 //2.获取回复列表,回复不做分页处理
                 List<Comment> replyList = commentService.findCommentsByEntity(
@@ -113,6 +131,7 @@ public class DiscussPostController implements LearningBbsConstant {
                         replyShow.put("reply", reply);
                         //作者
                         replyShow.put("user", userService.findUserById(reply.getUserId()));
+
                         //回复目标(TargetId)，可以回复帖子的评论(=0)，也可以回复评论中某个人的回复(=userId)
                         User target = reply.getTargetId() == 0 ? null : userService.findUserById(reply.getTargetId());
                         replyShow.put("target", target);

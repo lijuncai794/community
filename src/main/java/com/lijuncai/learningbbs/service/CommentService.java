@@ -14,7 +14,7 @@ import org.springframework.web.util.HtmlUtils;
 import java.util.List;
 
 /**
- * @description: 评论的service
+ * @description: 评论相关的服务类
  * @author: lijuncai
  **/
 @Service
@@ -39,6 +39,7 @@ public class CommentService implements LearningBbsConstant {
     /**
      * 新增评论
      * 事务处理：新增评论、更新帖子表中的评论数量
+     *
      * @param comment 评论对象
      * @return
      */

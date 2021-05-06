@@ -10,7 +10,7 @@ import org.springframework.web.util.HtmlUtils;
 import java.util.List;
 
 /**
- * @description:
+ * @description: 消息相关的服务类
  * @author: lijuncai
  **/
 @Service
@@ -78,6 +78,7 @@ public class MessageService {
 
     /**
      * 新增消息
+     * 对消息进行标签转义、敏感词过滤之后再插入数据库
      *
      * @param message 消息对象
      * @return 受影响的行数

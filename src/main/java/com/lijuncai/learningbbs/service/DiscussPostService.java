@@ -10,7 +10,7 @@ import org.springframework.web.util.HtmlUtils;
 import java.util.List;
 
 /**
- * @description: DiscussPost的服务类
+ * @description: 帖子相关的服务类
  * @author: lijuncai
  **/
 @Service
