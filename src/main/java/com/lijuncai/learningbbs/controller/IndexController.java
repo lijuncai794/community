@@ -67,6 +67,5 @@ public class IndexController implements LearningBbsConstant {
         model.addAttribute("discussPosts", discussPosts);
         return "/index";
     }
-
-
+    
 }

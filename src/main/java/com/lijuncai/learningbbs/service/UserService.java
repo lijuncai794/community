@@ -1,16 +1,13 @@
 package com.lijuncai.learningbbs.service;
 
-import com.lijuncai.learningbbs.dao.LoginTicketMapper;
 import com.lijuncai.learningbbs.dao.UserMapper;
 import com.lijuncai.learningbbs.entity.LoginTicket;
 import com.lijuncai.learningbbs.entity.User;
-import com.lijuncai.learningbbs.util.HostHolder;
-import com.lijuncai.learningbbs.util.LearningBbsConstant;
-import com.lijuncai.learningbbs.util.LearningBbsUtil;
-import com.lijuncai.learningbbs.util.MailClient;
+import com.lijuncai.learningbbs.util.*;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -19,6 +16,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @description: User的服务类
@@ -37,7 +35,10 @@ public class UserService implements LearningBbsConstant {
     private TemplateEngine templateEngine;
 
     @Autowired
-    private LoginTicketMapper loginTicketMapper;
+    private RedisTemplate redisTemplate;
+
+//    @Autowired
+//    private LoginTicketMapper loginTicketMapper;
 
     @Autowired
     private HostHolder hostHolder;
@@ -57,7 +58,14 @@ public class UserService implements LearningBbsConstant {
      * @return User对象
      */
     public User findUserById(int id) {
-        return userMapper.selectById(id);
+//        return userMapper.selectById(id);(原有方案:直接从Mysql中查询)
+
+        //现在从redis中获取,若为空则初始化用户缓存(从Mysql查询再缓存至redis)
+        User user = getUserCache(id);
+        if (user == null) {
+            user = initUserCache(id);
+        }
+        return user;
     }
 
     /**
@@ -145,6 +153,8 @@ public class UserService implements LearningBbsConstant {
         } else if (user.getActivationCode().equals(code)) {
             //若该用户未激活且激活码正确，则返回“激活成功”
             userMapper.updateStatus(userId, 1);
+            //用户数据发生了变更,需要清空其在redis中的缓存
+            clearUserCache(userId);
             return ACTIVATION_SUCCESS;
         }
         return ACTIVATION_FAILURE;
@@ -198,7 +208,11 @@ public class UserService implements LearningBbsConstant {
         loginTicket.setTicket(LearningBbsUtil.generateUUID());
         loginTicket.setStatus(0);
         loginTicket.setExpired(new Date(System.currentTimeMillis() + expiredSeconds * 1000));
-        loginTicketMapper.insertLoginTicket(loginTicket);
+//        loginTicketMapper.insertLoginTicket(loginTicket);(登录凭证原有存入mysql的方案)
+
+        //现在将登录凭证存入redis
+        String redisKey = RedisKeyUtil.getTicketKey(loginTicket.getTicket());
+        redisTemplate.opsForValue().set(redisKey, loginTicket);//loginTicket对象会被自动序列化成字符串
 
         map.put("ticket", loginTicket.getTicket());
         return map;
@@ -210,7 +224,13 @@ public class UserService implements LearningBbsConstant {
      * @param ticket 登录凭证
      */
     public void logout(String ticket) {
-        loginTicketMapper.updateStatus(ticket, 1);
+//        loginTicketMapper.updateStatus(ticket, 1);(原Mysql方案)
+
+        //将redis中的凭证取出来,将状态设置为1(失效状态)再存回去
+        String redisKey = RedisKeyUtil.getTicketKey(ticket);
+        LoginTicket loginTicket = (LoginTicket) redisTemplate.opsForValue().get(redisKey);
+        loginTicket.setStatus(1);
+        redisTemplate.opsForValue().set(redisKey, loginTicket);
     }
 
     /**
@@ -220,7 +240,11 @@ public class UserService implements LearningBbsConstant {
      * @return 对应的登录凭证对象
      */
     public LoginTicket findLoginTicket(String ticket) {
-        return loginTicketMapper.selectByTicket(ticket);
+//        return loginTicketMapper.selectByTicket(ticket);(原Mysql方案)
+
+        //在redis中取凭证
+        String redisKey = RedisKeyUtil.getTicketKey(ticket);
+        return (LoginTicket) redisTemplate.opsForValue().get(redisKey);
     }
 
     /**
@@ -231,7 +255,10 @@ public class UserService implements LearningBbsConstant {
      * @return 受影响的行
      */
     public int updateHeader(int userId, String headerUrl) {
-        return userMapper.updateHeader(userId, headerUrl);
+//        return userMapper.updateHeader(userId, headerUrl);
+        int rows = userMapper.updateHeader(userId, headerUrl);
+        clearUserCache(userId);//用户数据发生变更，清除redis缓存
+        return rows;
     }
 
     /**
@@ -261,5 +288,46 @@ public class UserService implements LearningBbsConstant {
      */
     public User findUserByName(String username) {
         return userMapper.selectByName(username);
+    }
+
+    /**
+     * 查询用户数据时：
+     * 1.优先从redis中获取
+     * 2.redis中没有时,就去数据库查询并将数据缓存在redis中
+     * 3.当数据发生变更时,就清除redis中的数据
+     */
+
+    /**
+     * 从redis缓存中获取User对象
+     *
+     * @param userId 用户id
+     * @return User对象
+     */
+    private User getUserCache(int userId) {
+        String redisKey = RedisKeyUtil.getUserKey(userId);
+        return (User) redisTemplate.opsForValue().get(redisKey);
+    }
+
+    /**
+     * 从数据库中获取User对象,并缓存在redis中
+     *
+     * @param userId 用户id
+     * @return User对象
+     */
+    private User initUserCache(int userId) {
+        //根据用户id在数据库中获取User对象
+        User user = userMapper.selectById(userId);
+        String redisKey = RedisKeyUtil.getUserKey(userId);
+        //将User对象缓存在redis中,有效期为1个小时
+        redisTemplate.opsForValue().set(redisKey, user, 3600, TimeUnit.SECONDS);
+        return user;
+    }
+
+    /**
+     * 当用户数据发生变更时,就清除该用户缓存在redis中的数据
+     */
+    private void clearUserCache(int userId) {
+        String redisKey = RedisKeyUtil.getUserKey(userId);
+        redisTemplate.delete(redisKey);
     }
 }

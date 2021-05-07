@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.*;
  * @author: lijuncai
  **/
 @Mapper
+@Deprecated //登录凭证使用redis方案来存储了,此注解用于声明此类“不推荐使用”
 public interface LoginTicketMapper {
     //除了可以在配置文件写sql，还可以利用注解来写sql
 
