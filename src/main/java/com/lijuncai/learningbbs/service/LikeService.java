@@ -18,12 +18,12 @@ public class LikeService {
     private RedisTemplate redisTemplate;
 
     /**
-     * 点赞操作
+     * 点赞
      *
-     * @param userId       点赞的用户id
-     * @param entityType   实体类型
-     * @param entityId     实体id
-     * @param entityUserId 实体所属用户id
+     * @param userId       int 点赞的用户id
+     * @param entityType   int 实体类型
+     * @param entityId     int 实体id
+     * @param entityUserId int 实体所属用户id
      */
     public void like(int userId, int entityType, int entityId, int entityUserId) {
         /*
@@ -68,9 +68,9 @@ public class LikeService {
     /**
      * 查询某实体点赞的数量
      *
-     * @param entityType 实体类型
-     * @param entityId   实体id
-     * @return 点赞的数量
+     * @param entityType int 实体类型
+     * @param entityId   int 实体id
+     * @return long 点赞的数量
      */
     public long findEntityLikeCount(int entityType, int entityId) {
         String entityLikeKey = RedisKeyUtil.getEntityLikeKey(entityType, entityId);
@@ -81,10 +81,10 @@ public class LikeService {
      * 查询某用户对某实体的点赞状态
      * 使用int作为返回值,便于扩展其他功能，比如点踩
      *
-     * @param userId     用户id
-     * @param entityType 实体类型
-     * @param entityId   实体id
-     * @return 点赞状态(0 : 未点赞, 1 : 已点赞)
+     * @param userId     int 用户id
+     * @param entityType int 实体类型
+     * @param entityId   int 实体id
+     * @return int 点赞状态(0 : 未点赞, 1 : 已点赞)
      */
     public int findEntityLikeStatus(int userId, int entityType, int entityId) {
         String entityLikeKey = RedisKeyUtil.getEntityLikeKey(entityType, entityId);
@@ -94,8 +94,8 @@ public class LikeService {
     /**
      * 查询用户获得点赞的数量
      *
-     * @param userId 用户id
-     * @return 获得点赞的数量
+     * @param userId int 用户id
+     * @return int 点赞的数量
      */
     public int findUserLikeCount(int userId) {
         String userLikeKey = RedisKeyUtil.getUserLikeKey(userId);

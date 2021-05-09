@@ -49,7 +49,7 @@ public class LoginController implements LearningBbsConstant {
     /**
      * 访问注册页面
      *
-     * @return String 注册页面的模板地址
+     * @return String "注册页面"的模板路径
      */
     @RequestMapping(path = "/register", method = RequestMethod.GET)
     public String getRegisterPage() {
@@ -60,9 +60,9 @@ public class LoginController implements LearningBbsConstant {
     /**
      * 用户注册:提交信息进行注册
      *
-     * @param model model对象，SpringMVC自动注入
-     * @param user  user对象，页面传入的参数名与user属性名相匹配则自动注入
-     * @return String 注册结果页面的模板地址
+     * @param model Model对象，SpringMVC自动注入
+     * @param user  User对象，页面传入的参数名与user属性名相匹配则自动注入
+     * @return String "注册结果"页面的模板路径
      */
     @RequestMapping(path = "/register", method = RequestMethod.POST)
     public String register(Model model, User user) {
@@ -82,7 +82,7 @@ public class LoginController implements LearningBbsConstant {
     /**
      * 访问登录页面
      *
-     * @return String 登录页面的模板地址
+     * @return String "登录页面"的模板路径
      */
     @RequestMapping(path = "/login", method = RequestMethod.GET)
     public String getLoginPage() {
@@ -92,14 +92,14 @@ public class LoginController implements LearningBbsConstant {
     /**
      * 用户登录:提交信息进行登录
      *
-     * @param username   用户名
-     * @param password   密码
-     * @param captcha    验证码
-     * @param rememberme 是否勾选记住我选项
-     * @param model      model对象
+     * @param username   String 用户名
+     * @param password   String 密码
+     * @param captcha    String 验证码
+     * @param rememberme boolean 是否勾选记住我选项
+     * @param model      Model对象
      *                   //     * @param session    会话对象
-     * @param response   响应对象
-     * @return String 登录结果的模板地址
+     * @param response   HttpServletResponse 响应对象
+     * @return String "登录结果"的模板路径
      */
     @RequestMapping(path = "/login", method = RequestMethod.POST)
     public String login(String username, String password, String captcha, boolean rememberme,
@@ -138,7 +138,7 @@ public class LoginController implements LearningBbsConstant {
     /**
      * 生成登录所需要的验证码
      *
-     * @param response 响应对象
+     * @param response HttpServletResponse 响应对象
      *                 //     * @param session  会话对象
      */
     @RequestMapping(path = "/kaptcha", method = RequestMethod.GET)
@@ -176,8 +176,8 @@ public class LoginController implements LearningBbsConstant {
     /**
      * 用户激活
      *
-     * @param model model对象
-     * @return String 激活结果的模板地址
+     * @param model Model对象
+     * @return String "激活结果"页面的模板路径
      */
     @RequestMapping(path = "/activation/{userId}/{code}", method = RequestMethod.GET)
     public String activation(Model model, @PathVariable("userId") int userId,
@@ -200,8 +200,8 @@ public class LoginController implements LearningBbsConstant {
     /**
      * 退出登录状态
      *
-     * @param ticket 登录凭证
-     * @return String 重定向到登录页面的模板地址
+     * @param ticket String 登录凭证
+     * @return String 重定向到"登录页面"的模板路径
      */
     @RequestMapping(path = "/logout", method = RequestMethod.GET)
     public String logout(@CookieValue("ticket") String ticket) {

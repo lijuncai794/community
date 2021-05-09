@@ -60,7 +60,7 @@ public class UserController implements LearningBbsConstant {
     /**
      * 访问"账号设置"页面
      *
-     * @return 页面模板地址
+     * @return String "账号设置"页面模板路径
      */
     @LoginRequired
     @RequestMapping(path = "/setting", method = RequestMethod.GET)
@@ -71,9 +71,9 @@ public class UserController implements LearningBbsConstant {
     /**
      * 更新用户头像
      *
-     * @param headerImage 新头像url
-     * @param model       model对象
-     * @return 模板页面
+     * @param headerImage MultipartFile 新的头像文件
+     * @param model       Model对象
+     * @return String 页面模板路径
      */
     @LoginRequired
     @RequestMapping(path = "/upload", method = RequestMethod.POST)
@@ -88,7 +88,7 @@ public class UserController implements LearningBbsConstant {
             model.addAttribute("error", "图片的格式不正确，仅支持png和jpg!");
             return "/site/setting";
         }
-        //生成随机文件名
+        //生成唯一的随机文件名
         fileName = LearningBbsUtil.generateUUID() + suffix;
         //确定文件存放的路径
         File dest = new File(uploadPath + "/" + fileName);
@@ -111,16 +111,16 @@ public class UserController implements LearningBbsConstant {
     /**
      * 获取用户头像
      *
-     * @param fileName 头像文件名
-     * @param response 响应对象
+     * @param fileName String 头像文件名
+     * @param response HttpServletResponse对象
      */
     @RequestMapping(path = "/header/{fileName}", method = RequestMethod.GET)
     public void getHeader(@PathVariable("fileName") String fileName, HttpServletResponse response) {
-        // 服务器存放路径
+        //服务器存放路径
         fileName = uploadPath + "/" + fileName;
-        // 文件后缀
+        //文件后缀
         String suffix = fileName.substring(fileName.lastIndexOf("."));
-        // 响应图片
+        //响应图片
         response.setContentType("image/" + suffix);
         try (
                 FileInputStream fis = new FileInputStream(fileName);
@@ -139,10 +139,10 @@ public class UserController implements LearningBbsConstant {
     /**
      * 修改用户密码
      *
-     * @param oldPassword 原密码
-     * @param newPassword 新密码
-     * @param model       model对象
-     * @return 模板页面
+     * @param oldPassword String 原密码
+     * @param newPassword String 新密码
+     * @param model       Model对象
+     * @return String 页面模板路径
      */
     @RequestMapping(path = "/update-password", method = RequestMethod.POST)
     public String updatePassword(String oldPassword, String newPassword, Model model) {
@@ -159,9 +159,9 @@ public class UserController implements LearningBbsConstant {
     /**
      * 访问用户主页
      *
-     * @param userId 用户id
-     * @param model  model对象
-     * @return 用户主页模板地址
+     * @param userId int 用户id
+     * @param model  Model对象
+     * @return String "用户主页"模板路径
      */
     @RequestMapping(path = "/profile/{userId}", method = RequestMethod.GET)
     public String getProfilePage(@PathVariable("userId") int userId, Model model) {

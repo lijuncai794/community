@@ -46,5 +46,29 @@
         update discuss_post set comment_count = #{commentCount} where id = #{id}
     </update>
 
+    <update id="updatePostStatus">
+        update discuss_post set status = #{status} where id = #{id}
+    </update>
+
+    <select id="search" resultType="DiscussPost">
+        select
+        <include refid="selectFields"></include>
+        from discuss_post p
+        <where>
+            status != 2 and (p.title like concat(concat('%',#{keyword}),'%') or p.content like
+            concat(concat('%',#{keyword}),'%'))
+        </where>
+        order by type desc, create_time desc
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="selectSearchTotal" resultType="int">
+        select count(id)
+        from discuss_post p
+        <where>
+            status != 2 and (p.title like concat(concat('%',#{keyword}),'%') or p.content like
+            concat(concat('%',#{keyword}),'%'))
+        </where>
+    </select>
 
 </mapper>

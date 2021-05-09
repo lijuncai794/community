@@ -23,10 +23,10 @@ public class LoginRequiredInterceptor implements HandlerInterceptor {
     /**
      * 在Controller处理之前判断该方法是否需要登录
      *
-     * @param request  请求对象
-     * @param response 响应对象
-     * @param handler  被拦截的对象
-     * @return 处理状态
+     * @param request  HttpServletRequest 请求对象
+     * @param response HttpServletResponse 响应对象
+     * @param handler  Object 被拦截的对象
+     * @return boolean 处理是否完成
      * @throws Exception
      */
     @Override

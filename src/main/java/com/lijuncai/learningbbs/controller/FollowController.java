@@ -35,11 +35,11 @@ public class FollowController implements LearningBbsConstant {
 
     /**
      * 关注
-     * 处理页面点击“关注”时的异步请求
+     * 处理页面点击“关注”时的ajax异步请求
      *
-     * @param entityType 实体类型
-     * @param entityId   实体id
-     * @return json字符串响应，表示处理结果
+     * @param entityType int 实体类型
+     * @param entityId   int 实体id
+     * @return String json字符串响应，表示处理结果
      */
     @RequestMapping(path = "/follow", method = RequestMethod.POST)
     @ResponseBody
@@ -54,9 +54,9 @@ public class FollowController implements LearningBbsConstant {
     /**
      * 取消关注
      *
-     * @param entityType 实体类型
-     * @param entityId   实体id
-     * @return json字符串响应，表示处理结果
+     * @param entityType int 实体类型
+     * @param entityId   int 实体id
+     * @return String json字符串响应，表示处理结果
      */
     @RequestMapping(path = "/unfollow", method = RequestMethod.POST)
     @ResponseBody
@@ -71,10 +71,10 @@ public class FollowController implements LearningBbsConstant {
     /**
      * 显示用户关注的人
      *
-     * @param userId 用户id
-     * @param page   分页对象
-     * @param model  model对象
-     * @return String 用户关注列表的模板地址
+     * @param userId int 用户id
+     * @param page   Page 分页对象
+     * @param model  Model对象
+     * @return String "用户关注列表"的模板路径
      */
     @RequestMapping(path = "/followees/{userId}", method = RequestMethod.GET)
     public String getFollowees(@PathVariable("userId") int userId, Page page, Model model) {
@@ -105,7 +105,7 @@ public class FollowController implements LearningBbsConstant {
     /**
      * 判断当前用户是否已关注该目标用户
      *
-     * @param userId 目标用户id
+     * @param userId int 目标用户id
      * @return boolean 是否已关注该目标用户
      */
     private boolean hasFollowed(int userId) {
@@ -118,10 +118,10 @@ public class FollowController implements LearningBbsConstant {
     /**
      * 显示用户的粉丝列表
      *
-     * @param userId 用户id
-     * @param page   分页对象
-     * @param model  model对象
-     * @return 用户粉丝列表的模板地址
+     * @param userId int 用户id
+     * @param page   Page 分页对象
+     * @param model  Model对象
+     * @return String "用户粉丝列表"的模板路径
      */
     @RequestMapping(path = "/followers/{userId}", method = RequestMethod.GET)
     public String getFollowers(@PathVariable("userId") int userId, Page page, Model model) {

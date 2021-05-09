@@ -35,9 +35,9 @@ public class MessageController {
     /**
      * 获取用户所有的会话
      *
-     * @param model model对象
-     * @param page  分页对象
-     * @return 会话列表模板的路径
+     * @param model Model对象
+     * @param page  Page 分页对象
+     * @return String "会话列表"模板路径
      */
     @RequestMapping(path = "/letter/list", method = RequestMethod.GET)
     public String getLetterList(Model model, Page page) {
@@ -79,10 +79,10 @@ public class MessageController {
     /**
      * 用户单个会话的详情，显示会话里面的多条消息
      *
-     * @param conversationId 会话id
-     * @param page           分页对象
-     * @param model          model对象
-     * @return 会话详情模板地址
+     * @param conversationId int 会话id
+     * @param page           Page 分页对象
+     * @param model          Model对象
+     * @return String "会话详情"的模板路径
      */
     @RequestMapping(path = "/letter/detail/{conversationId}", method = RequestMethod.GET)
     public String getLetterDetail(@PathVariable("conversationId") String conversationId, Page page, Model model) {
@@ -120,8 +120,8 @@ public class MessageController {
     /**
      * 获取私信的发送者
      *
-     * @param conversationId 会话id
-     * @return 私信的发送者User对象
+     * @param conversationId String 会话id
+     * @return User 私信的发送者
      */
     private User getLetterTarget(String conversationId) {
         String[] ids = conversationId.split("_");
@@ -138,8 +138,8 @@ public class MessageController {
     /**
      * 获取私信列表的id列表
      *
-     * @param letterList 私信列表
-     * @return 私信的id列表
+     * @param letterList List<Message> 私信列表
+     * @return List<Integer> 私信的id列表
      */
     private List<Integer> getLetterIds(List<Message> letterList) {
         List<Integer> ids = new ArrayList<>();
@@ -159,9 +159,9 @@ public class MessageController {
     /**
      * 给用户发送私信
      *
-     * @param toName  接收私信的用户名
-     * @param content 私信内容
-     * @return
+     * @param toName  String 接收私信的用户名
+     * @param content String 私信内容
+     * @return String 私信数据的JSON字符串
      */
     @RequestMapping(path = "/letter/send", method = RequestMethod.POST)
     @ResponseBody

@@ -46,9 +46,9 @@ public class DiscussPostController implements LearningBbsConstant {
     /**
      * 新增一个帖子
      *
-     * @param title   帖子标题
-     * @param content 帖子正文
-     * @return json字符串，代表完成状态
+     * @param title   String 帖子标题
+     * @param content String 帖子正文
+     * @return String json字符串，代表完成状态
      */
     @RequestMapping(path = "/add", method = RequestMethod.POST)
     @ResponseBody
@@ -70,10 +70,10 @@ public class DiscussPostController implements LearningBbsConstant {
     /**
      * 获取帖子的数据，如标题、正文、评论等
      *
-     * @param discussPostId 帖子id
-     * @param model         model对象
-     * @param page          分页对象
-     * @return 帖子详情页面模板
+     * @param discussPostId int 帖子id
+     * @param model         Model对象
+     * @param page          Page 分页对象
+     * @return String "帖子详情"的模板路径
      */
     @RequestMapping(path = "/detail/{discussPostId}", method = RequestMethod.GET)
     public String getDiscussPost(@PathVariable("discussPostId") int discussPostId, Model model, Page page) {
@@ -83,6 +83,8 @@ public class DiscussPostController implements LearningBbsConstant {
         //获取帖子的发布者
         User user = userService.findUserById(post.getUserId());
         model.addAttribute("user", user);
+        //获取当前线程的用户
+        model.addAttribute("curUser", hostHolder.getUser());
         //获取帖子的点赞数量
         long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, post.getId());
         model.addAttribute("likeCount", likeCount);
@@ -151,5 +153,25 @@ public class DiscussPostController implements LearningBbsConstant {
         //将commentShowList存入model
         model.addAttribute("comments", commentShowList);
         return "/site/discuss-detail";
+    }
+
+    /**
+     * 删除帖子
+     *
+     * @param id int 帖子id
+     * @return String json字符串，代表完成状态
+     */
+    @RequestMapping(path = "/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteDiscussPost(int id) {
+        User user = hostHolder.getUser();
+        DiscussPost post = discussPostService.findDiscussPostById(id);
+
+        if (user == null || user.getId() != post.getUserId()) {
+            return LearningBbsUtil.getJSONString(403, "删帖失败,没有操作权限!");
+        }
+
+        discussPostService.deleteDiscussPostById(id);
+        return LearningBbsUtil.getJSONString(0, "删除成功!");
     }
 }

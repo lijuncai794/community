@@ -53,7 +53,7 @@ public class SensitiveFilter {
     /**
      * 将一个敏感词添加到前缀树中
      *
-     * @param keyword 敏感词
+     * @param keyword String 敏感词
      */
     private void addKeyword(String keyword) {
         TrieNode tempNode = rootNode;
@@ -80,8 +80,8 @@ public class SensitiveFilter {
     /**
      * 过滤敏感词
      *
-     * @param text 待过滤的文本
-     * @return 过滤后的文本
+     * @param text String 待过滤的文本
+     * @return String 过滤后的文本
      */
     public String filter(String text) {
         if (StringUtils.isBlank(text)) {
@@ -142,8 +142,8 @@ public class SensitiveFilter {
     /**
      * 判断当前字符是否为特殊符号
      *
-     * @param c 字符
-     * @return 普通字符返回false，特殊字符返回true
+     * @param c Character 字符
+     * @return boolean 普通字符返回false，特殊字符返回true
      */
     private boolean isSymbol(Character c) {
         // 0x2E80~0x9FFF 是东亚文字范围
@@ -165,12 +165,12 @@ public class SensitiveFilter {
             isKeywordEnd = keywordEnd;
         }
 
-        // 添加子节点
+        //添加子节点
         public void addSubNode(Character c, TrieNode node) {
             subNodes.put(c, node);
         }
 
-        // 获取子节点
+        //获取子节点
         public TrieNode getSubNode(Character c) {
             return subNodes.get(c);
         }

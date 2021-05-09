@@ -15,8 +15,8 @@ public interface LoginTicketMapper {
     /**
      * 新增一个登录凭证
      *
-     * @param loginTicket 登录凭证
-     * @return
+     * @param loginTicket LoginTicket对象
+     * @return int 受影响的行数
      */
     @Insert({
             "insert into login_ticket(user_id,ticket,status,expired) ",
@@ -28,8 +28,8 @@ public interface LoginTicketMapper {
     /**
      * 通过凭证来查询此登录凭证所有的信息
      *
-     * @param ticket
-     * @return
+     * @param ticket String 凭证字符串
+     * @return LoginTicket 凭证对象
      */
     @Select({
             "select id,user_id,ticket,status,expired ",
@@ -41,9 +41,9 @@ public interface LoginTicketMapper {
      * 更新登录凭证的信息
      * 使用<script>标签也可以在这里使用动态sql语句
      *
-     * @param ticket
-     * @param status
-     * @return
+     * @param ticket String 凭证字符串
+     * @param status int 凭证状态
+     * @return int 受影响的行数
      */
     @Update({
             "<script>",

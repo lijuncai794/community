@@ -5,6 +5,7 @@ import com.lijuncai.learningbbs.entity.Page;
 import com.lijuncai.learningbbs.entity.User;
 import com.lijuncai.learningbbs.service.DiscussPostService;
 import com.lijuncai.learningbbs.service.LikeService;
+import com.lijuncai.learningbbs.service.MessageService;
 import com.lijuncai.learningbbs.service.UserService;
 import com.lijuncai.learningbbs.util.LearningBbsConstant;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,10 +35,13 @@ public class IndexController implements LearningBbsConstant {
     @Autowired
     private LikeService likeService;
 
+    @Autowired
+    private MessageService messageService;
+
     /**
-     * 获取首页数据
+     * 访问首页,获取首页数据
      *
-     * @return 首页模板的路径
+     * @return String "首页"的模板路径
      */
     @RequestMapping(path = {"/index", "/"}, method = RequestMethod.GET)
     public String getIndexData(Model model, Page page) {
@@ -59,6 +63,9 @@ public class IndexController implements LearningBbsConstant {
                 //获取帖子点赞数量
                 long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, discussPost.getId());
                 map.put("likeCount", likeCount);
+                //查询未读消息的数量
+                int letterUnreadCount = messageService.findLetterUnreadCount(user.getId(), null);
+                map.put("letterUnreadCount", letterUnreadCount);
 
                 discussPosts.add(map);
             }
@@ -67,5 +74,5 @@ public class IndexController implements LearningBbsConstant {
         model.addAttribute("discussPosts", discussPosts);
         return "/index";
     }
-    
+
 }

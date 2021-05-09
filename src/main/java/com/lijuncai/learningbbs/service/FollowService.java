@@ -28,9 +28,9 @@ public class FollowService implements LearningBbsConstant {
      * 关注
      * 使用事务来实现，因为有两个操作：1被关注者的粉丝增加、2关注数量增加
      *
-     * @param userId     用户id
-     * @param entityType 实体类型
-     * @param entityId   实体id
+     * @param userId     int 用户id
+     * @param entityType int 实体类型
+     * @param entityId   int 实体id
      */
     public void follow(int userId, int entityType, int entityId) {
         redisTemplate.execute(new SessionCallback() {
@@ -53,9 +53,9 @@ public class FollowService implements LearningBbsConstant {
     /**
      * 取消关注，主要逻辑同关注
      *
-     * @param userId     用户id
-     * @param entityType 实体类型
-     * @param entityId   实体id
+     * @param userId     int 用户id
+     * @param entityType int 实体类型
+     * @param entityId   int 实体id
      */
     public void unfollow(int userId, int entityType, int entityId) {
         redisTemplate.execute(new SessionCallback() {
@@ -78,8 +78,8 @@ public class FollowService implements LearningBbsConstant {
      * 查询用户关注的实体的数量
      * entityType=2代表关注了多少帖子,entityType=3代表关注了多少用户
      *
-     * @param userId     用户id
-     * @param entityType 实体类型
+     * @param userId     int 用户id
+     * @param entityType int 实体类型
      * @return long 用户关注的实体的数量
      */
     public long findFolloweeCount(int userId, int entityType) {
@@ -90,8 +90,8 @@ public class FollowService implements LearningBbsConstant {
     /**
      * 查询实体的粉丝数量
      *
-     * @param entityType 实体类型
-     * @param entityId   实体id
+     * @param entityType int 实体类型
+     * @param entityId   int 实体id
      * @return long 实体的粉丝数量
      */
     public long findFollowerCount(int entityType, int entityId) {
@@ -102,9 +102,9 @@ public class FollowService implements LearningBbsConstant {
     /**
      * 查询当前用户是否已关注该实体
      *
-     * @param userId     用户id
-     * @param entityType 实体类型
-     * @param entityId   实体id
+     * @param userId     int 用户id
+     * @param entityType int 实体类型
+     * @param entityId   int 实体id
      * @return boolean 是否已关注该实体
      */
     public boolean hasFollowed(int userId, int entityType, int entityId) {
@@ -115,9 +115,9 @@ public class FollowService implements LearningBbsConstant {
     /**
      * 查询某用户关注的人
      *
-     * @param userId 用户id
-     * @param offset 查询偏移
-     * @param limit  每页最大显示数量
+     * @param userId int 用户id
+     * @param offset int 起始行号
+     * @param limit  int 每页最大显示数量
      * @return List<Map < String, Object>>关注列表
      */
     public List<Map<String, Object>> findFollowees(int userId, int offset, int limit) {
@@ -146,9 +146,9 @@ public class FollowService implements LearningBbsConstant {
     /**
      * 查询某用户的粉丝
      *
-     * @param userId 用户id
-     * @param offset 查询偏移
-     * @param limit  每页最大显示数量
+     * @param userId int 用户id
+     * @param offset int 查询行号
+     * @param limit  int 每页最大显示数量
      * @return List<Map < String, Object>>粉丝列表
      */
     public List<Map<String, Object>> findFollowers(int userId, int offset, int limit) {

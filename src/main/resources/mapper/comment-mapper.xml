@@ -13,7 +13,8 @@
     </sql>
 
     <select id="selectCommentsByEntity" resultType="Comment">
-        select <include refid="selectFields"></include>
+        select
+        <include refid="selectFields"></include>
         from comment
         where status = 0
         and entity_type = #{entityType}
@@ -34,5 +35,27 @@
         insert into comment(<include refid="insertFields"></include>)
         values(#{userId},#{entityType},#{entityId},#{targetId},#{content},#{status},#{createTime})
     </insert>
+
+    <update id="updateCommentStatus">
+        update comment set status = #{status} where id = #{id}
+    </update>
+
+    <select id="selectUserIdById" resultType="int">
+        select user_id
+        from comment
+        where id = #{id}
+    </select>
+
+    <select id="selectEntityIdById" resultType="int">
+        select entity_id
+        from comment
+        where id = #{id}
+    </select>
+
+    <select id="selectEntityTypeById" resultType="int">
+        select entity_type
+        from comment
+        where id = #{id}
+    </select>
 
 </mapper>

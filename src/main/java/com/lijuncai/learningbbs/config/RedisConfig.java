@@ -18,8 +18,8 @@ public class RedisConfig {
     /**
      * 配置RedisTemplate
      *
-     * @param factory Redis连接工厂
-     * @return RedisTemplate对象
+     * @param factory RedisConnectionFactory Redis连接工厂
+     * @return RedisTemplate<String, Object>
      */
     @Bean
     public RedisTemplate<String, Object> redisTemplate(RedisConnectionFactory factory) {

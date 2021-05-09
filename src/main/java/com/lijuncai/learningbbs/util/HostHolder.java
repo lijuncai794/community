@@ -15,16 +15,16 @@ public class HostHolder {
     /**
      * 存入user对象
      *
-     * @param user user对象
+     * @param user User对象
      */
     public void setUser(User user) {
         users.set(user);
     }
 
     /**
-     * 获取user对象
+     * 获取当前线程的User对象
      *
-     * @return user对象
+     * @return User对象
      */
     public User getUser() {
         return users.get();

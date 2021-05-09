@@ -11,9 +11,9 @@ public class CookieUtil {
     /**
      * 获取cookie中key对应的value
      *
-     * @param request 请求对象
-     * @param name    cookie中的key
-     * @return cookie中的key对应的value
+     * @param request HttpServletRequest 请求对象
+     * @param name    String cookie中的key
+     * @return String cookie中的key对应的value
      */
     public static String getValue(HttpServletRequest request, String name) {
         if (request == null || name == null) {

@@ -28,9 +28,10 @@ public class LikeController {
     /**
      * 对实体进行点赞
      *
-     * @param entityType 实体类型
-     * @param entityId   实体id
-     *                   //     * @param entityUserId 实体所属用户id
+     * @param entityType   int 实体类型
+     * @param entityId     int 实体id
+     * @param entityUserId int 实体所属的用户id
+     * @return String 点赞数据的json字符串
      */
     @RequestMapping(path = "/like", method = RequestMethod.POST)
     @ResponseBody

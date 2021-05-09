@@ -73,9 +73,11 @@
                 <img src="http://static.nowcoder.com/images/img/icons/ico-discuss.png"/>
                 <span th:utext="${post.title}">备战春招，面试刷题跟他复习，一个月全搞定！</span>
                 <div class="float-right">
-                    <button type="button" class="btn btn-danger btn-sm">置顶</button>
-                    <button type="button" class="btn btn-danger btn-sm">加精</button>
-                    <button type="button" class="btn btn-danger btn-sm">删除</button>
+                    <input type="hidden" id="postId" th:value="${post.id}">
+<!--                    <button type="button" class="btn btn-danger btn-sm">置顶</button>-->
+<!--                    <button type="button" class="btn btn-danger btn-sm">加精</button>-->
+                    <button type="button" th:if="${curUser.id==post.userId}"
+                            id="delPost" class="btn btn-danger btn-sm">删除</button>
                 </div>
             </h4>
             <!-- 作者 -->
@@ -122,7 +124,7 @@
             <!-- 回帖列表 -->
             <ul class="list-unstyled mt-4">
                 <!-- 第1条回帖 -->
-                <li class="media pb-3 pt-3 mb-3 border-bottom" th:each="comment_show_list:${comments}">
+                <li class="media pb-3 pt-3 mb-3 border-bottom" th:each="comment_show_list:${comments}" th:id="${comment_show_list.comment.id}">
                     <a th:href="@{|/user/profile/${comment_show_list.user.id}|}">
                         <img th:src="${comment_show_list.user.headerUrl}"
                              class="align-self-start mr-4 rounded-circle user-header" alt="用户头像">
@@ -150,9 +152,18 @@
                                             th:text="${comment_show_list.likeCount}">1</i>)
                                     </a>
                                 </li>
+
                                 <li class="d-inline ml-2">|</li>
                                 <li class="d-inline ml-2"><a href="#" class="text-primary">回复(<i
                                         th:text="${comment_show_list.replyCount}">2</i>)</a></li>
+                                <li class="d-inline ml-2" th:if="${curUser.id==comment_show_list.user.id}">|</li>
+
+                                <li class="d-inline ml-2" th:if="${curUser.id==comment_show_list.user.id}">
+                                    <a href="javascript:;"
+                                       th:onclick="|deleteComment(${comment_show_list.comment.id});|"
+                                       class="text-primary">删除
+                                    </a>
+                                </li>
                             </ul>
                         </div>
                         <!-- 回复列表 -->

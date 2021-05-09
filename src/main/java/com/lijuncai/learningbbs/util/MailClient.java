@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMailMessage;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
 
@@ -29,9 +28,9 @@ public class MailClient {
     /**
      * 发送邮件
      *
-     * @param to      收件地址
-     * @param subject 邮件主体
-     * @param content 邮件内容
+     * @param to      String 收件地址
+     * @param subject String 邮件主体
+     * @param content String 邮件内容
      */
     public void sendMail(String to, String subject, String content) {
         try {

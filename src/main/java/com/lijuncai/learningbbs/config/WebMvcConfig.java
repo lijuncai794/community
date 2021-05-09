@@ -1,6 +1,5 @@
 package com.lijuncai.learningbbs.config;
 
-import com.lijuncai.learningbbs.controller.interceptor.HelloInterceptor;
 import com.lijuncai.learningbbs.controller.interceptor.LoginInfoInterceptor;
 import com.lijuncai.learningbbs.controller.interceptor.LoginRequiredInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,8 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
  **/
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
-    @Autowired
-    private HelloInterceptor helloInterceptor;
+    //    @Autowired
+//    private HelloInterceptor helloInterceptor;
     @Autowired
     private LoginInfoInterceptor loginInfoInterceptor;
     @Autowired
@@ -24,7 +23,7 @@ public class WebMvcConfig implements WebMvcConfigurer {
     /**
      * 添加拦截器
      *
-     * @param registry registry对象
+     * @param registry InterceptorRegistry对象
      */
     @Override
     public void addInterceptors(InterceptorRegistry registry) {

@@ -44,4 +44,14 @@ public interface LearningBbsConstant {
      * 实体类型：用户
      */
     int ENTITY_TYPE_USER = 3;
+
+    /**
+     * 帖子状态:删除
+     */
+    int POST_STATUS_DELETE = 2;
+
+    /**
+     * 评论状态:删除
+     */
+    int COMMENT_STATUS_DELETE = 2;
 }

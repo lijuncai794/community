@@ -20,8 +20,8 @@ public class RedisKeyUtil {
      * key格式为： like:entity:entityType:entityId
      * value内容为: 使用set来存储userId,不仅可以查看点赞数量，还可以实现查询是谁点的赞
      *
-     * @param entityType 实体类型
-     * @param entityId   实体id
+     * @param entityType int 实体类型
+     * @param entityId   int 实体id
      * @return String 实体在redis中"赞"的key
      */
     public static String getEntityLikeKey(int entityType, int entityId) {
@@ -33,7 +33,7 @@ public class RedisKeyUtil {
      * key格式为： like:user:userId
      * value内容为: 获得赞的数量
      *
-     * @param userId 用户id
+     * @param userId int 用户id
      * @return String 用户在redis中"赞"的key
      */
     public static String getUserLikeKey(int userId) {
@@ -48,8 +48,8 @@ public class RedisKeyUtil {
      * key格式：followee:userId:entityType
      * value内容：zset(entityId,nowTime),根据当前时间的整数形式排序
      *
-     * @param userId     用户id
-     * @param entityType 实体类型
+     * @param userId     int 用户id
+     * @param entityType int 实体类型
      * @return String 用户关注的实体在redis中的key
      */
     public static String getFolloweeKey(int userId, int entityType) {
@@ -61,8 +61,8 @@ public class RedisKeyUtil {
      * key格式：follower:entityType:entityId
      * value内容：zset(userId,nowTime),根据当前时间的整数形式排序
      *
-     * @param entityType 实体类型
-     * @param entityId   实体id
+     * @param entityType int 实体类型
+     * @param entityId   int 实体id
      * @return String 实体拥有的粉丝在redis中的key
      */
     public static String getFollowerKey(int entityType, int entityId) {
@@ -73,7 +73,7 @@ public class RedisKeyUtil {
     /**
      * 获取登录验证码在redis中的key
      *
-     * @param tempIdentity 用户登录时的临时标识,存放在cookie中
+     * @param tempIdentity String 用户登录时的临时标识,存放在cookie中
      * @return String 验证码在redis中的key
      */
     public static String getKaptchaKey(String tempIdentity) {
@@ -83,7 +83,7 @@ public class RedisKeyUtil {
     /**
      * 获取登录凭证在redis中的key
      *
-     * @param ticket 凭证字符串
+     * @param ticket String 凭证字符串
      * @return String 登录凭证在redis中的key
      */
     public static String getTicketKey(String ticket) {
@@ -93,7 +93,7 @@ public class RedisKeyUtil {
     /**
      * 获取用户在redis中的key
      *
-     * @param userId 用户id
+     * @param userId int 用户id
      * @return String 用户在redis中的key
      */
     public static String getUserKey(int userId) {

@@ -31,10 +31,10 @@ public class LoginInfoInterceptor implements HandlerInterceptor {
      * 在本次请求中持有当前user对象
      * preHandle()在Controller处理请求之前调用
      *
-     * @param request  请求对象
-     * @param response 响应对象
-     * @param handler  被拦截的对象
-     * @return 处理是否成功
+     * @param request  HttpServletRequest 请求对象
+     * @param response HttpServletResponse 响应对象
+     * @param handler  Object 被拦截的对象
+     * @return 处理是否完成
      * @throws Exception
      */
     @Override
@@ -60,10 +60,10 @@ public class LoginInfoInterceptor implements HandlerInterceptor {
      * 将user对象存入ModelAndView,供模板引擎使用
      * postHandle()方法在Controller处理之后、模板引擎TemplateEngine执行之前调用
      *
-     * @param request
-     * @param response
-     * @param handler
-     * @param modelAndView
+     * @param request      HttpServletRequest 请求对象
+     * @param response     HttpServletResponse 响应对象
+     * @param handler      Object 被拦截的对象
+     * @param modelAndView ModelAndView
      * @throws Exception
      */
     @Override
@@ -78,10 +78,10 @@ public class LoginInfoInterceptor implements HandlerInterceptor {
      * 本次请求处理完毕，清除user对象
      * 在模板引擎执行完毕之后，就可以对user对象进行清理了
      *
-     * @param request
-     * @param response
-     * @param handler
-     * @param ex
+     * @param request  HttpServletRequest 请求对象
+     * @param response HttpServletResponse 响应对象
+     * @param handler  Object 被拦截的对象
+     * @param ex       Exception
      * @throws Exception
      */
     @Override

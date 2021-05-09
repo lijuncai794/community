@@ -54,7 +54,7 @@ public class UserService implements LearningBbsConstant {
     /**
      * 根据用户id查询
      *
-     * @param id 用户id
+     * @param id int 用户id
      * @return User对象
      */
     public User findUserById(int id) {
@@ -71,8 +71,8 @@ public class UserService implements LearningBbsConstant {
     /**
      * 用户注册
      *
-     * @param user 用户对象
-     * @return 注册流程的状态信息
+     * @param user User 用户对象
+     * @return Map<String, Object> 注册流程的状态信息
      */
     public Map<String, Object> register(User user) {
         // Map用于存放注册时的各类状态信息
@@ -138,9 +138,9 @@ public class UserService implements LearningBbsConstant {
     /**
      * 用户激活
      *
-     * @param userId 用户id
-     * @param code   激活码
-     * @return 激活状态
+     * @param userId int 用户id
+     * @param code   String 激活码
+     * @return int 激活状态
      */
     public int activation(int userId, String code) {
         User user = userMapper.selectById(userId);
@@ -163,10 +163,10 @@ public class UserService implements LearningBbsConstant {
     /**
      * 用户登录
      *
-     * @param username       用户名
-     * @param password       密码
-     * @param expiredSeconds 登录有效期(秒)
-     * @return 登录流程的状态信息
+     * @param username       String 用户名
+     * @param password       String 密码
+     * @param expiredSeconds int 登录有效期(秒)
+     * @return Map<String, Object> 登录流程的状态信息
      */
     public Map<String, Object> login(String username, String password, int expiredSeconds) {
         Map<String, Object> map = new HashMap<>();
@@ -221,7 +221,7 @@ public class UserService implements LearningBbsConstant {
     /**
      * 退出登录状态:将登录凭证设置为失效状态(status=1)
      *
-     * @param ticket 登录凭证
+     * @param ticket String 登录凭证
      */
     public void logout(String ticket) {
 //        loginTicketMapper.updateStatus(ticket, 1);(原Mysql方案)
@@ -236,8 +236,8 @@ public class UserService implements LearningBbsConstant {
     /**
      * 获取登录凭证对象
      *
-     * @param ticket 登录凭证字符串
-     * @return 对应的登录凭证对象
+     * @param ticket String 登录凭证字符串
+     * @return LoginTicket 对应的登录凭证对象
      */
     public LoginTicket findLoginTicket(String ticket) {
 //        return loginTicketMapper.selectByTicket(ticket);(原Mysql方案)
@@ -250,9 +250,9 @@ public class UserService implements LearningBbsConstant {
     /**
      * 更新用户头像
      *
-     * @param userId    用户id
-     * @param headerUrl 新头像的url
-     * @return 受影响的行
+     * @param userId    int 用户id
+     * @param headerUrl String 新头像的url
+     * @return int 受影响的行
      */
     public int updateHeader(int userId, String headerUrl) {
 //        return userMapper.updateHeader(userId, headerUrl);
@@ -264,8 +264,8 @@ public class UserService implements LearningBbsConstant {
     /**
      * 修改用户密码
      *
-     * @param oldPassword 原密码
-     * @param newPassword 新密码
+     * @param oldPassword String 原密码
+     * @param newPassword String 新密码
      * @return int, 表示修改是否成功[-1代表失败，其他代表成功]
      */
     public int updatePassword(String oldPassword, String newPassword) {
@@ -283,7 +283,7 @@ public class UserService implements LearningBbsConstant {
     /**
      * 根据用户名查询用户
      *
-     * @param username 用户名
+     * @param username String 用户名
      * @return
      */
     public User findUserByName(String username) {
@@ -300,7 +300,7 @@ public class UserService implements LearningBbsConstant {
     /**
      * 从redis缓存中获取User对象
      *
-     * @param userId 用户id
+     * @param userId int 用户id
      * @return User对象
      */
     private User getUserCache(int userId) {
@@ -311,7 +311,7 @@ public class UserService implements LearningBbsConstant {
     /**
      * 从数据库中获取User对象,并缓存在redis中
      *
-     * @param userId 用户id
+     * @param userId int 用户id
      * @return User对象
      */
     private User initUserCache(int userId) {
