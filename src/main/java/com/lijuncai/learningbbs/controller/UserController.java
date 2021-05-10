@@ -1,7 +1,10 @@
 package com.lijuncai.learningbbs.controller;
 
 import com.lijuncai.learningbbs.annotaion.LoginRequired;
+import com.lijuncai.learningbbs.entity.DiscussPost;
+import com.lijuncai.learningbbs.entity.Page;
 import com.lijuncai.learningbbs.entity.User;
+import com.lijuncai.learningbbs.service.DiscussPostService;
 import com.lijuncai.learningbbs.service.FollowService;
 import com.lijuncai.learningbbs.service.LikeService;
 import com.lijuncai.learningbbs.service.UserService;
@@ -25,6 +28,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @description: 处理用户相关请求
@@ -56,6 +63,9 @@ public class UserController implements LearningBbsConstant {
 
     @Autowired
     private FollowService followService;
+
+    @Autowired
+    private DiscussPostService discussPostService;
 
     /**
      * 访问"账号设置"页面
@@ -190,5 +200,48 @@ public class UserController implements LearningBbsConstant {
         model.addAttribute("hasFollowed", hasFollowed);
 
         return "/site/profile";
+    }
+
+    /**
+     * 访问"我的帖子"
+     *
+     * @param userId int 用户id
+     * @param model  Model对象
+     * @return String "我的帖子"模板路径
+     */
+    @RequestMapping(path = "/profile/{userId}/posts", method = RequestMethod.GET)
+    public String getUserPosts(@PathVariable("userId") int userId, Model model, Page page) {
+        //根据id查询用户
+        User user = userService.findUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("访问用户主页失败，该用户不存在!");
+        }
+
+        //设置分页信息
+        page.setRows(discussPostService.findDiscussPostRows(userId));
+        page.setPath("/user/profile/" + userId + "/posts");
+
+        //获取指定用户的所有的帖子
+        List<DiscussPost> discussPostList = discussPostService.findDiscussPosts(userId, page.getOffset(), page.getLimit());
+        List<Map<String, Object>> discussPosts = new ArrayList<>();
+        if (discussPostList != null) {
+            for (DiscussPost discussPost : discussPostList) {
+                //每个HashMap中存放的是帖子数据和帖子点赞的数据
+                Map<String, Object> map = new HashMap<>();
+                map.put("post", discussPost);
+                //获取帖子点赞数量
+                long likeCount = likeService.findEntityLikeCount(ENTITY_TYPE_POST, discussPost.getId());
+                map.put("likeCount", likeCount);
+                discussPosts.add(map);
+            }
+        }
+        //将discussPosts添加至model
+        model.addAttribute("discussPosts", discussPosts);
+        //将当前主页的所属用户添加至model
+        model.addAttribute("user", user);
+        //将当前主页的所属用户添加至model
+        model.addAttribute("postCount", discussPostList.size());
+
+        return "/site/my-post";
     }
 }

@@ -2,6 +2,7 @@ package com.lijuncai.learningbbs.controller.interceptor;
 
 import com.lijuncai.learningbbs.entity.LoginTicket;
 import com.lijuncai.learningbbs.entity.User;
+import com.lijuncai.learningbbs.service.MessageService;
 import com.lijuncai.learningbbs.service.UserService;
 import com.lijuncai.learningbbs.util.CookieUtil;
 import com.lijuncai.learningbbs.util.HostHolder;
@@ -26,6 +27,9 @@ public class LoginInfoInterceptor implements HandlerInterceptor {
 
     @Autowired
     private HostHolder hostHolder;
+
+    @Autowired
+    private MessageService messageService;
 
     /**
      * 在本次请求中持有当前user对象
@@ -57,7 +61,7 @@ public class LoginInfoInterceptor implements HandlerInterceptor {
     }
 
     /**
-     * 将user对象存入ModelAndView,供模板引擎使用
+     * 将user对象和导航栏中的信息存入ModelAndView,供模板引擎使用
      * postHandle()方法在Controller处理之后、模板引擎TemplateEngine执行之前调用
      *
      * @param request      HttpServletRequest 请求对象
@@ -71,6 +75,8 @@ public class LoginInfoInterceptor implements HandlerInterceptor {
         User user = hostHolder.getUser();
         if (user != null && modelAndView != null) {
             modelAndView.addObject("loginUser", user);
+            int letterUnreadCount = messageService.findLetterUnreadCount(user.getId(), null);
+            modelAndView.addObject("letterUnreadCount", letterUnreadCount);
         }
     }
 
