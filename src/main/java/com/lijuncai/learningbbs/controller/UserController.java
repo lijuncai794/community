@@ -154,6 +154,7 @@ public class UserController implements LearningBbsConstant {
      * @param model       Model对象
      * @return String 页面模板路径
      */
+    @LoginRequired
     @RequestMapping(path = "/update-password", method = RequestMethod.POST)
     public String updatePassword(String oldPassword, String newPassword, Model model) {
         int status = userService.updatePassword(oldPassword, newPassword);
@@ -173,6 +174,7 @@ public class UserController implements LearningBbsConstant {
      * @param model  Model对象
      * @return String "用户主页"模板路径
      */
+    @LoginRequired
     @RequestMapping(path = "/profile/{userId}", method = RequestMethod.GET)
     public String getProfilePage(@PathVariable("userId") int userId, Model model) {
         //根据id查询用户
@@ -209,6 +211,7 @@ public class UserController implements LearningBbsConstant {
      * @param model  Model对象
      * @return String "我的帖子"模板路径
      */
+    @LoginRequired
     @RequestMapping(path = "/profile/{userId}/posts", method = RequestMethod.GET)
     public String getUserPosts(@PathVariable("userId") int userId, Model model, Page page) {
         //根据id查询用户

@@ -23,7 +23,7 @@ import java.util.Date;
 public class ServiceLogAspect {
     private static final Logger logger = LoggerFactory.getLogger(ServiceLogAspect.class);
 
-    //此切入点表示：处理所有service包下的所有类以及所有的方法，所有的参数
+    //公共切入点抽取，此切入点表示：处理所有service包下的所有类以及所有的方法，所有的参数
     @Pointcut("execution(* com.lijuncai.learningbbs.service.*.*(..))")
     public void pointCut() {
 

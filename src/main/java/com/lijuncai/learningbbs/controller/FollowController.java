@@ -1,5 +1,6 @@
 package com.lijuncai.learningbbs.controller;
 
+import com.lijuncai.learningbbs.annotaion.LoginRequired;
 import com.lijuncai.learningbbs.entity.Page;
 import com.lijuncai.learningbbs.entity.User;
 import com.lijuncai.learningbbs.service.FollowService;
@@ -41,6 +42,7 @@ public class FollowController implements LearningBbsConstant {
      * @param entityId   int 实体id
      * @return String json字符串响应，表示处理结果
      */
+    @LoginRequired
     @RequestMapping(path = "/follow", method = RequestMethod.POST)
     @ResponseBody
     public String follow(int entityType, int entityId) {
@@ -58,6 +60,7 @@ public class FollowController implements LearningBbsConstant {
      * @param entityId   int 实体id
      * @return String json字符串响应，表示处理结果
      */
+    @LoginRequired
     @RequestMapping(path = "/unfollow", method = RequestMethod.POST)
     @ResponseBody
     public String unfollow(int entityType, int entityId) {
@@ -76,6 +79,7 @@ public class FollowController implements LearningBbsConstant {
      * @param model  Model对象
      * @return String "用户关注列表"的模板路径
      */
+    @LoginRequired
     @RequestMapping(path = "/followees/{userId}", method = RequestMethod.GET)
     public String getFollowees(@PathVariable("userId") int userId, Page page, Model model) {
         User user = userService.findUserById(userId);
@@ -123,6 +127,7 @@ public class FollowController implements LearningBbsConstant {
      * @param model  Model对象
      * @return String "用户粉丝列表"的模板路径
      */
+    @LoginRequired
     @RequestMapping(path = "/followers/{userId}", method = RequestMethod.GET)
     public String getFollowers(@PathVariable("userId") int userId, Page page, Model model) {
         User user = userService.findUserById(userId);

@@ -11,6 +11,8 @@ function like(btn, entityType, entityId, entityUserId) {
             if (data.code == 0) { //请求成功
                 $(btn).children("i").text(data.likeCount);
                 $(btn).children("b").text(data.likeStatus == 1 ? '已赞' : "赞");
+            } else if (data.code == 2){//未登录，无访问权限
+                location.href = CONTEXT_PATH + "/login";
             } else { //请求失败
                 alert(data.msg);
             }
@@ -42,7 +44,7 @@ function deleteComment(commentId) {
         function (data) {
             data = $.parseJSON(data);
             if (data.code == 0) {
-                $("#"+commentId).hide();
+                $("#" + commentId).hide();
             } else {
                 alert(data.msg);
             }

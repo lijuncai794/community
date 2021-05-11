@@ -1,5 +1,6 @@
 package com.lijuncai.learningbbs.controller;
 
+import com.lijuncai.learningbbs.annotaion.LoginRequired;
 import com.lijuncai.learningbbs.entity.Message;
 import com.lijuncai.learningbbs.entity.Page;
 import com.lijuncai.learningbbs.entity.User;
@@ -39,6 +40,7 @@ public class MessageController {
      * @param page  Page 分页对象
      * @return String "会话列表"模板路径
      */
+    @LoginRequired
     @RequestMapping(path = "/letter/list", method = RequestMethod.GET)
     public String getLetterList(Model model, Page page) {
         User user = hostHolder.getUser();
@@ -84,6 +86,7 @@ public class MessageController {
      * @param model          Model对象
      * @return String "会话详情"的模板路径
      */
+    @LoginRequired
     @RequestMapping(path = "/letter/detail/{conversationId}", method = RequestMethod.GET)
     public String getLetterDetail(@PathVariable("conversationId") String conversationId, Page page, Model model) {
         //设置分页信息
@@ -163,6 +166,7 @@ public class MessageController {
      * @param content String 私信内容
      * @return String 私信数据的JSON字符串
      */
+    @LoginRequired
     @RequestMapping(path = "/letter/send", method = RequestMethod.POST)
     @ResponseBody
     public String sendLetter(String toName, String content) {

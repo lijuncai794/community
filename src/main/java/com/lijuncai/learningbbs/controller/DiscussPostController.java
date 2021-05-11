@@ -1,5 +1,6 @@
 package com.lijuncai.learningbbs.controller;
 
+import com.lijuncai.learningbbs.annotaion.LoginRequired;
 import com.lijuncai.learningbbs.entity.Comment;
 import com.lijuncai.learningbbs.entity.DiscussPost;
 import com.lijuncai.learningbbs.entity.Page;
@@ -50,6 +51,7 @@ public class DiscussPostController implements LearningBbsConstant {
      * @param content String 帖子正文
      * @return String json字符串，代表完成状态
      */
+    @LoginRequired
     @RequestMapping(path = "/add", method = RequestMethod.POST)
     @ResponseBody
     public String addDiscussPost(String title, String content) {
@@ -161,13 +163,15 @@ public class DiscussPostController implements LearningBbsConstant {
      * @param id int 帖子id
      * @return String json字符串，代表完成状态
      */
+    @LoginRequired
     @RequestMapping(path = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public String deleteDiscussPost(int id) {
         User user = hostHolder.getUser();
         DiscussPost post = discussPostService.findDiscussPostById(id);
 
-        if (user == null || user.getId() != post.getUserId()) {
+//        if (user == null || user.getId() != post.getUserId()) {
+        if (user.getId() != post.getUserId()) {
             return LearningBbsUtil.getJSONString(403, "删帖失败,没有操作权限!");
         }
 

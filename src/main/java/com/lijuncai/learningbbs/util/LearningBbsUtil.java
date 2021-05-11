@@ -23,7 +23,7 @@ public class LearningBbsUtil {
     }
 
     /**
-     * 对密码进行md5加密
+     * 对明文密码进行md5加密
      *
      * @param key String 明文密码
      * @return String 经过md5加密后的密码

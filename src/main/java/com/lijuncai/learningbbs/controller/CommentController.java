@@ -1,5 +1,6 @@
 package com.lijuncai.learningbbs.controller;
 
+import com.lijuncai.learningbbs.annotaion.LoginRequired;
 import com.lijuncai.learningbbs.entity.Comment;
 import com.lijuncai.learningbbs.entity.User;
 import com.lijuncai.learningbbs.service.CommentService;
@@ -35,6 +36,7 @@ public class CommentController {
      * @param comment       Comment对象
      * @return String "帖子详情"的模板路径
      */
+    @LoginRequired
     @RequestMapping(path = "/add/{discussPostId}", method = RequestMethod.POST)
     public String addComment(@PathVariable("discussPostId") int discussPostId, Comment comment) {
         comment.setUserId(hostHolder.getUser().getId());
@@ -51,6 +53,7 @@ public class CommentController {
      * @param id int 评论id
      * @return String json字符串，代表完成状态
      */
+    @LoginRequired
     @RequestMapping(path = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public String deleteDiscussPost(int id) {

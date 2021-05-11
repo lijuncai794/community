@@ -1,5 +1,6 @@
 package com.lijuncai.learningbbs.controller;
 
+import com.lijuncai.learningbbs.annotaion.LoginRequired;
 import com.lijuncai.learningbbs.entity.User;
 import com.lijuncai.learningbbs.service.LikeService;
 import com.lijuncai.learningbbs.util.HostHolder;
@@ -33,6 +34,7 @@ public class LikeController {
      * @param entityUserId int 实体所属的用户id
      * @return String 点赞数据的json字符串
      */
+    @LoginRequired
     @RequestMapping(path = "/like", method = RequestMethod.POST)
     @ResponseBody
     public String like(int entityType, int entityId, int entityUserId) {
