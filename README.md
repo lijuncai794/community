@@ -1,2 +1,2 @@
 # learning-bbs
-learning-bbs是一个基于Spring Boot的学习社区
+learning-bbs是一个基于Spring Boot的学习论坛
